@@ -1,117 +1,62 @@
 var wordchoices = ["volkl", "fischer", "line", "armada", "icelantic", "salomon", "rossignol", "elan", "blackdiamond", "atomic", "blizzard", "nordica", "faction", "dynastar", "volant", "head", "moment", "stokli", "scott"];
-// var guessesremaining = 13;
-var currentword = "";
+var guessesremaining = 13;
+var currentword = chooseRandWord(wordchoices);
 // var lettersguessed = [];
 var keepPlaying = true;
 
-
-var playerStats = {
-  wins: 0,
-  looses: 0,
-  lettersGuessed: [],
-  guessesRemaining: 10,
-
-  //counts guesses left
-GuessCounter: function() {
-    this.guessesRemaining--;
-}
+var wins = 0;
+var looses = 0;
+var lettersGuessed = [];
+var guessesremaining = 10;
 
 
 
 
-
-
-}
-var chosenwordtext = document.getElementById("chosen-word");
-var wintext = document.getElementById("wins-text");
-var chosenwordblankstext = document.getElementById("chosen-word-blank-text");
+var chosenwordText = document.getElementById("chosen-word");
+var winText = document.getElementById("wins-text");
+var chosenwordblanksText = document.getElementById("chosen-word-blanks-text");
 var InstructionText = document.getElementById("instruction-text");
+var remainingguessesText = document.getElementById("remainingguesses-text");
+var lettersguessedText = document.getElementById("lettersguessed-text");
+var startText = document.getElementById("start-text");
 
-
-var gameUntilityFunctions = {
-
-
-  //checks if a letter only was entered?
-  checkIfOnlyLettersEntered: function(letter) {
-
-  },
-
-
-  //picks a random word from passed in array
-  pickRandomWord: function(arr) {
-    var randword = arr[Math.floor(Math.random() * myArray.length)];
-    return randword;
-  }
-
-
-
-
-
+//returns randomly chosen word from array of words
+function chooseRandWord (wordarray) {
+    return wordarray[Math.floor(Math.random()*wordarray.length)];
 }
 
-
-//displays word to screen with ____
-function displayWord(chosenword) {
-  for (var i = 0; i < chosenword.length; i++) {
-    chosenwordtext += '_';
-  }
-}
-
-//user guesses letter if correct -> guess-- and show correct letter in place on screen
-//if incorrect check # of guesses and ask again if there are any left.
-function userTakesaGuesses() {
- 
-//HERE PRINT WHAT TO DO! 
-  InstructionText = "Please guess a letter!";
-  var userguess;
-  document.onkeyup = function(event) {
-    userguess = event.key;
-  }
-  return userguess;
-
-}
-
-function whatLetterIsShown(chosenword) {
-  var guessedletter = userTakesaGuesses();        //function that returns letter chosen by user
-  var numberOfLetterOccurances = chosenword.match(/guessedletter/g || []).length;   //Regex that return number of occurences of a letter in a string
-   if(numberOfLetterOccurances >= 1) {
-      return guessedletter;
-    } 
-    else {
-      playerStats.GuessCounter();
+//returns string of blank spaces equal to work 
+function printBlank(wordToPrint) {
+    var stringOfBlanks = "";
+    for(var i = 0; i < wordToPrint.length; i++){
+        stringOfBlanks += "_ ";
     }
-  
+    return stringOfBlanks;
 }
 
-//shows single letter if chosen
-function showletter(chosenword) {
- 
-
-}
-
-//counts guesses used and left
-function GuessCounter(gussesused) {
+function userGuess(guessedChar){
+    lettersGuessed.push(guessedChar.toLowerCase());
+    guessesremaining--;
 
 }
 
-
-//checks to see if user has guesses left, if not ends game and asks to play again.
-function isGameOver(numberofguesses) {
-
-}
-
-//checks to see if full word has been spelled out.
-function iWon() {
-
+function gameOver(numGuesses){
+    if(numGuesses === 0){
+        document.write("LOSER!");
+    }
 }
 
 
-//put everthing together to play a game.
-while (keepPlaying) {
-  function PlayAGame() {
-    return 'undef.';
 
-
-  }
+document.onkeyup = function(event){
+console.log(currentword);
+console.log(printBlank(currentword));
+if(event.key){
+    console.log(event.key);
+    userGuess(event.key);
+    console.log(lettersGuessed.toString())
+    console.log(guessesremaining);
+chosenwordblanksText.textContent = printBlank(currentword);
+gameOver(guessesremaining);
 }
-
+}
