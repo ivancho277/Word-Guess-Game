@@ -126,27 +126,27 @@ function isgameOver () {
 //Testing (left console.logs for testing purposes to be uncommented)
 document.onkeyup = function (event) {
   
-  console.log (currentword); //test currentword chosen at random
-  console.log (wordToCharArray (currentword)); //test character array
-  //chosenwordblanksText.textContent = printBlank(currentword).toString();
+  //console.log (currentword); //test currentword chosen at random
+  //console.log (wordToCharArray (currentword)); //test character array
+  chosenwordblanksText.textContent = printBlank(currentword).toString();
   //console.log(printBlank(currentword).toString()); //test priting blanks
   if (event.key !== 'F5') {
     //makes sure that refresh key doesnt count as key for testing
-    console.log (event.key); //logs pressed key
-    console.log (userGuess(event.key)); //passes key pressed to userGuess function
-    console.log (lettersGuessed.toString()); //logs users guesses.
-    console.log (guessesremaining); //logs how many guesses remain
+    //console.log (event.key); //logs pressed key
+    (userGuess(event.key)); //passes key pressed to userGuess function
+   // console.log (lettersGuessed.toString()); //logs users guesses.
+   // console.log (guessesremaining); //logs how many guesses remain
     chosenwordblanksText.textContent = printBlank (currentword); //prints blank spaces to html.
-    console.log (isgameOver ());
+    //console.log (isgameOver ());
     
     lettersguessedText.textContent = lettersGuessed.toString();
     remainingguessesText.textContent =
       'Guesses Remaining : ' + guessesremaining.toString ();
     checkToSeeifPressedKeyIsInWord(event.key);
     
-    console.log(blanksWord);
+    //console.log(blanksWord);
     chosenwordblanksText.textContent = blanksWord;
-    console.log(doWordsMatch());
+   // console.log(doWordsMatch());
     //console.log(userGuess(event.key));
     winOrLoseCondition();
     winText.textContent = "Wins: " + wins;
