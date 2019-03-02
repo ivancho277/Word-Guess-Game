@@ -29,7 +29,7 @@ var keepPlaying = true;
 var wins = 0;
 var losses = 0;
 var lettersGuessed = [];
-var guessesremaining = 12;
+var guessesremaining = 13;
 //get all text areas by ID in order to modify
 var chosenwordText = document.getElementById ('chosen-word');
 var winText = document.getElementById ('wins-text');
@@ -41,6 +41,8 @@ var lettersguessedText = document.getElementById ('lettersguessed-text');
 var startText = document.getElementById ('start-text');
 
 chosenwordblanksText.textContent = blanksWord.toString ();
+
+
 //returns randomly chosen word from array of words
 function chooseRandWord (wordarray) {
   return wordarray[Math.floor (Math.random () * wordarray.length)];
@@ -50,7 +52,7 @@ function chooseRandWord (wordarray) {
 function printBlank (wordToPrint) {
   var stringOfBlanks = [];
   for (var i = 0; i < wordToPrint.length; i++) {
-    stringOfBlanks.push ('-');
+    stringOfBlanks[i] = '-';
   }
   return stringOfBlanks;
 }
@@ -58,8 +60,9 @@ function printBlank (wordToPrint) {
 //takes a guessed letter from user, pushes it into array of guessed chars, subracts 1 from guesses left
 function userGuess (guessedChar) {
   var letter = guessedChar;
-  lettersGuessed.push (letter.toLowerCase ());
+  lettersGuessed.push(letter.toLowerCase ());
   guessesremaining--;
+  return lettersGuessed;
 }
 
 //takes input word, spits out array of its chars
@@ -84,34 +87,38 @@ function checkToSeeifPressedKeyIsInWord (char) {
 //check to see if blanksWord doesnt include any '-' means its full of letters
 function doWordsMatch(){
   if(!blanksWord.includes('-')){
+    
     return true;
+
   }
   else {return false}
 }
 
 //reset number of guesses on new game
-function resetNumberOfGuesses () {
-  if(isgameOver() && doWordsMatch()){
-    currentword = chooseRandWord (wordchoices);
-    printBlank = printBlank(currentword);
+function winOrLoseCondition () {
+  if(doWordsMatch()){
+    currentword = chooseRandWord(wordchoices);
+    lettersGuessed = [];
+    blanksWord = printBlank(currentword);
     wins++;
     guessesremaining = 13;
   }
-  else if(isgameOver()){
-    currentword = chooseRandWord (wordchoices);
-    printBlank = printBlank(currentword);
+  else if(isgameOver()) {
+    currentword = chooseRandWord(wordchoices);
+    lettersGuessed = [];
+    blanksWord = printBlank(currentword);
     losses++;
     guessesremaining = 13;
   }
-  else { break; }
-
 }
 
 //check if game is over
 function isgameOver () {
-  if (guessesremaining > 0 && !doWordsMatch()) {
+  if (guessesremaining > 0 ) {
+    
     return false;
   } else {
+    
     return true;
   }
 }
@@ -126,13 +133,13 @@ document.onkeyup = function (event) {
   if (event.key !== 'F5') {
     //makes sure that refresh key doesnt count as key for testing
     console.log (event.key); //logs pressed key
-    console.log (userGuess (event.key)); //passes key pressed to userGuess function
-    console.log (lettersGuessed); //logs users guesses.
+    console.log (userGuess(event.key)); //passes key pressed to userGuess function
+    console.log (lettersGuessed.toString()); //logs users guesses.
     console.log (guessesremaining); //logs how many guesses remain
     chosenwordblanksText.textContent = printBlank (currentword); //prints blank spaces to html.
     console.log (isgameOver ());
     
-    lettersguessedText.textContent += event.key + ' ';
+    lettersguessedText.textContent = lettersGuessed.toString();
     remainingguessesText.textContent =
       'Guesses Remaining : ' + guessesremaining.toString ();
     checkToSeeifPressedKeyIsInWord(event.key);
@@ -141,8 +148,7 @@ document.onkeyup = function (event) {
     chosenwordblanksText.textContent = blanksWord;
     console.log(doWordsMatch());
     //console.log(userGuess(event.key));
-    resetNumberOfGuesses();
-
+    winOrLoseCondition();
     winText.textContent = "Wins: " + wins;
     lossesText.textContent = "Losses: " + losses;
   }
