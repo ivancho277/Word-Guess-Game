@@ -21,14 +21,15 @@ var wordchoices = [
 ];
 //sets currently chosen word
 var currentword = chooseRandWord (wordchoices);
-
+//assignment of blanksspaces to size of current word
+var blanksWord = printBlank (currentword);
 // var lettersguessed = [];
 var keepPlaying = true;
  //global variables
 var wins = 0;
 var losses = 0;
 var lettersGuessed = [];
-var guessesremaining = 13;
+var guessesremaining = 12;
 //get all text areas by ID in order to modify
 var chosenwordText = document.getElementById ('chosen-word');
 var winText = document.getElementById ('wins-text');
@@ -37,8 +38,7 @@ var InstructionText = document.getElementById ('instruction-text');
 var remainingguessesText = document.getElementById ('remainingguesses-text');
 var lettersguessedText = document.getElementById ('lettersguessed-text');
 var startText = document.getElementById ('start-text');
-//assignment of blanksspaces to size of current word
-var blanksWord = printBlank (currentword);
+
 chosenwordblanksText.textContent = blanksWord.toString ();
 //returns randomly chosen word from array of words
 function chooseRandWord (wordarray) {
@@ -80,9 +80,17 @@ function checkToSeeifPressedKeyIsInWord (char) {
   }
 }
 
+//check to see if char array === chosen word array
+function doWordsMatch(){
+  if(blanksWord.toString() === currentword){
+    return true;
+  }
+  else {return false}
+}
+
 //reset number of guesses on new game
 function resetNumberOfGuesses () {
-  return 13;
+  return 12;
 }
 
 //check if game is over
@@ -97,7 +105,7 @@ function isgameOver () {
 
 //Testing
 document.onkeyup = function (event) {
-  var Iguessed = '';
+  
   console.log (currentword); //test currentword chosen at random
   console.log (wordToCharArray (currentword)); //test character array
   //chosenwordblanksText.textContent = printBlank(currentword).toString();
@@ -110,12 +118,15 @@ document.onkeyup = function (event) {
     console.log (guessesremaining); //logs how many guesses remain
     chosenwordblanksText.textContent = printBlank (currentword); //prints blank spaces to html.
     console.log (isgameOver ());
+    
     lettersguessedText.textContent += event.key + ' ';
     remainingguessesText.textContent =
       'Guesses Remaining : ' + guessesremaining.toString ();
-    console.log (checkToSeeifPressedKeyIsInWord (event.key));
-    console.log (blanksWord);
+    checkToSeeifPressedKeyIsInWord(event.key);
+    
+    console.log(blanksWord);
     chosenwordblanksText.textContent = blanksWord;
+    console.log(doWordsMatch());
     //console.log(userGuess(event.key));
     if (isgameOver ()) {
       guessesremaining = resetNumberOfGuesses ();
