@@ -33,6 +33,7 @@ var guessesremaining = 12;
 //get all text areas by ID in order to modify
 var chosenwordText = document.getElementById ('chosen-word');
 var winText = document.getElementById ('wins-text');
+var lossesText = document.getElementById('losses-text')
 var chosenwordblanksText = document.getElementById ('chosen-word-blanks-text');
 var InstructionText = document.getElementById ('instruction-text');
 var remainingguessesText = document.getElementById ('remainingguesses-text');
@@ -80,9 +81,9 @@ function checkToSeeifPressedKeyIsInWord (char) {
   }
 }
 
-//check to see if char array === chosen word array
+//check to see if blanksWord doesnt include any '-' means its full of letters
 function doWordsMatch(){
-  if(blanksWord.toString() === currentword){
+  if(!blanksWord.includes('-')){
     return true;
   }
   else {return false}
@@ -90,20 +91,32 @@ function doWordsMatch(){
 
 //reset number of guesses on new game
 function resetNumberOfGuesses () {
-  return 12;
+  if(isgameOver() && doWordsMatch()){
+    currentword = chooseRandWord (wordchoices);
+    printBlank = printBlank(currentword);
+    wins++;
+    guessesremaining = 13;
+  }
+  else if(isgameOver()){
+    currentword = chooseRandWord (wordchoices);
+    printBlank = printBlank(currentword);
+    losses++;
+    guessesremaining = 13;
+  }
+  else { break; }
+
 }
 
 //check if game is over
 function isgameOver () {
-  if (guessesremaining > 0) {
-    // numGuesses--;
+  if (guessesremaining > 0 && !doWordsMatch()) {
     return false;
   } else {
     return true;
   }
 }
 
-//Testing
+//Testing (left console.logs for testing purposes to be uncommented)
 document.onkeyup = function (event) {
   
   console.log (currentword); //test currentword chosen at random
@@ -128,8 +141,9 @@ document.onkeyup = function (event) {
     chosenwordblanksText.textContent = blanksWord;
     console.log(doWordsMatch());
     //console.log(userGuess(event.key));
-    if (isgameOver ()) {
-      guessesremaining = resetNumberOfGuesses ();
-    }
+    resetNumberOfGuesses();
+
+    winText.textContent = "Wins: " + wins;
+    lossesText.textContent = "Losses: " + losses;
   }
 };
