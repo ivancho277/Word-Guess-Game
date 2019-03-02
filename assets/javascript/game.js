@@ -55,6 +55,13 @@ function printBlank(wordToPrint) {
 function userGuess(guessedChar) {
   var letter = guessedChar;
   //check if in array of letter of chosen word. 
+  var charArray = wordToCharArray(currentword);
+ charArray.forEach(element => {
+    if(element === letter){
+      return letter;
+    }
+  });
+
 
   lettersGuessed.push(letter.toLowerCase());
   guessesremaining--;
@@ -76,7 +83,6 @@ function checkToSeeifPressedKeyIsInWord(char, word) {
 }
 
 function resetNumberOfGuesses() {
-
   return 10;
 }
 
@@ -95,16 +101,20 @@ function isgameOver() {
 //Testing
 document.onkeyup = function (event) {
 
+  var Iguessed = "";
   console.log(currentword); //test currentword chosen at random
   console.log(wordToCharArray(currentword)); //test character array
   console.log(printBlank(currentword)); //test priting blanks
   if (event.key !== "F5") { //makes sure that refresh key doesnt count as key for testing
     console.log(event.key); //logs pressed key
-    userGuess(event.key); //passes key pressed to userGuess function
+    console.log(userGuess(event.key)); //passes key pressed to userGuess function
     console.log(lettersGuessed); //logs users guesses.
     console.log(guessesremaining); //logs how many guesses remain
     chosenwordblanksText.textContent = printBlank(currentword); //prints blank spaces to html.
     console.log(isgameOver());
+    lettersguessedText.textContent += (event.key + " ");
+    remainingguessesText.textContent = "Guesses Remaining : " + guessesremaining.toString();
+    //console.log(userGuess(event.key));
     if (isgameOver()) {
       guessesremaining = resetNumberOfGuesses();
     }
